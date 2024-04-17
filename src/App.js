@@ -1,23 +1,27 @@
-import logo from './logo.svg';
 import './App.css';
+import Authentication from './pages/authentication/Authentication';
+import HomePage from './pages/homepage/HomePage';
+import React, { useEffect } from 'react';
+import { Route, Routes } from "react-router-dom"
+import {useDispatch,useSelector} from 'react-redux';
+import { getUserProfileAction } from './redux/auth/auth.action';
 
 function App() {
+  const {auth} = useSelector(store=>store)
+  const jwt = localStorage.getItem("jwt")
+  const dispatch=useDispatch()
+
+  useEffect(()=>{
+    dispatch(getUserProfileAction(jwt))
+  },[jwt])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="">
+        <Routes>
+         
+          <Route path="/*" element={auth.user? <HomePage />: <Authentication/>} />
+          <Route path="/*" element={<Authentication />} />
+        </Routes>
+
     </div>
   );
 }

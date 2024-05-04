@@ -10,9 +10,14 @@ const navigationMenu = [
         path:"/"
     },
     {
-        title:"Lists",
+        title:"Patients",
+        icon:<AccountCircleIcon/>,
+        path:"/patients"
+    },
+    {
+        title:"Others",
         icon:<ListAltIcon/>,
-        path:"/"
+        path:"/users"
     },
     {
         title:"Profile",

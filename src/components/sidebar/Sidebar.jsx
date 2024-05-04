@@ -4,28 +4,52 @@ import { Divider, Avatar, MenuItem, Menu, Button } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom"
+import useLogout from '../../redux/auth/logout';
 
 const Sidebar = () => {
   const navigate = useNavigate()
   const { auth } = useSelector(store => store)
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+
+  const logout = useLogout()
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
+    
   };
+  const handleLogout = () =>{
+    setAnchorEl(null);
+    logout()
+  }
 
   const handleNavigate = (item) => {
-    if (item.title == "Profile")
-      navigate(`/profile/${auth.user?.id}`)
+    switch (item.title) {
+      case "Home":
+        navigate('/')
+        break;
+      case "Others":
+        navigate('/users')
+        break;
+      case "Patients":
+        navigate('/patients')
+        break;
+      case "Profile":
+        navigate(`/profile/${auth.user?.id}`)
+        break;
+      default:
+        break;
+    }
+    
   }
   return (
-    <div className='card h-screen flex flex-col justify-between py-5'>
+    <div className='card h-screen flex flex-col justify-between py-5 bg-gray-800 dark:bg-white text-white'>
       <div className='space-y-8 pl-5'>
         <div className=''>
-          <span className='logo font-bold text-xl'>Breast Cancer Prediction</span>
+          <span className='logo font-bold text-xl'>Breast Cancer Detection</span>
         </div>
         <div className='space-y-8'>
           {navigationMenu.map((item) => <div onClick={() => handleNavigate(item)} className='cursor-pointer flex space-x-3 items-center'>
@@ -63,9 +87,9 @@ const Sidebar = () => {
                 'aria-labelledby': 'basic-button',
               }}
             >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>My account</MenuItem>
-              <MenuItem onClick={handleClose}>Logout</MenuItem>
+              <MenuItem onClick={() => navigate(`/profile/${auth.user?.id}`)}>Profile</MenuItem>
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              
             </Menu>
           </div>
         </div>

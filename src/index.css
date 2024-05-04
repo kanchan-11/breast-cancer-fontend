@@ -16,3 +16,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Additional styles for dark mode */
+.dark {
+  --bg-color: #1a202c; /* Dark background color */
+  --text-color: #ffffff; /* Light text color */
+}
+
+.dark body {
+  background-color: var(--bg-color); /* Override background color */
+  color: var(--text-color); /* Override text color */
+}

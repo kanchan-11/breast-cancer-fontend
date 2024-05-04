@@ -6,33 +6,32 @@ import Profile from '../profile/Profile';
 import Sidebar from '../../components/sidebar/Sidebar';
 import HomeRight from '../../components/homeRight/HomeRight';
 import { useSelector } from "react-redux";
+import Patients from '../../components/patient/Patients';
+import PatientData from '../../components/patient/PatientData';
+import Users from '../../components/users/Users';
+import Home from './Home';
 
 const HomePage = () => {
   const { auth } = useSelector(store => store);
 
   return (
-    <div className='px-20'>
-      <Grid container spacing={0}>
-        <Grid item lg={3} xs={0}>
-          <div className='sticky top-0'>
-            <Sidebar />
-          </div>
-        </Grid>
-        <Grid item className="px-5 flex justify-center" xs={12} lg={6}>
-          <Routes>
-            <Route path="/" element={<MiddlePart />} />
-            <Route path="/profile/:id" element={<Profile />} />
-          </Routes>
-        </Grid>
-        <Grid item lg={3} xs={12} className='relative'>
-          {auth && (
-            <div className='sticky top-0 w-full'>
-              <HomeRight />
-            </div>
-          )}
-        </Grid>
+    <Grid container spacing={0}>
+      <Grid item xs={12} sm={3} md={3} lg={3} xl={3} style={{ flex: '1' }}>
+        <div className='sticky top-0'>
+          <Sidebar />
+        </div>
       </Grid>
-    </div>
+      <Grid item xs={12} sm={10} md={10} lg={10} xl={10} style={{ flex: '1' }}>
+      
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/profile/:id" element={<Profile />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/patients" element={<Patients />} />
+          {/* <Route path="/patients/:id" element={<PatientData />} /> */}
+        </Routes>
+      </Grid>
+    </Grid>
   );
 }
 

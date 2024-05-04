@@ -1,4 +1,4 @@
-import { GET_UER_PROFILE_FAILURE, GET_UER_PROFILE_REQUEST, GET_UER_PROFILE_SUCCESS, LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, REGISTER_FAILURE, REGISTER_REQUEST, REGISTER_SUCCESS, UPDATE_USER_PROFILE_FAILURE, UPDATE_USER_PROFILE_REQUEST, UPDATE_USER_PROFILE_SUCCESS } from "./auth.actionType"
+import { GET_UER_PROFILE_FAILURE, GET_UER_PROFILE_REQUEST, GET_UER_PROFILE_SUCCESS, LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT, REGISTER_FAILURE, REGISTER_REQUEST, REGISTER_SUCCESS, UPDATE_USER_PROFILE_FAILURE, UPDATE_USER_PROFILE_REQUEST, UPDATE_USER_PROFILE_SUCCESS } from "./auth.actionType"
 import axios from "axios"
 import { API_BASE_URL, api } from "../../config/api"
 export const loginUserAction = (loginData) => async (dispatch) => {
@@ -14,6 +14,7 @@ export const loginUserAction = (loginData) => async (dispatch) => {
     } catch (error) {
         console.log("----------------", error);
         dispatch({ type: LOGIN_FAILURE, payload: error })
+        throw error
     }
 }
 
@@ -49,10 +50,14 @@ export const getUserProfileAction = (jwt) => async (dispatch) => {
     }
 }
 
-export const updateUserProfileAction = (reqData) => async (dispatch) => {
+export const updateUserProfileAction = (reqData,jwt) => async (dispatch) => {
     dispatch({ type: UPDATE_USER_PROFILE_REQUEST })
     try {
-        const { data } = await api.put(`${API_BASE_URL}/api/users`, reqData)
+        const { data } = await api.put(`${API_BASE_URL}/api/users`, reqData,{
+            headers: {
+                "Authorization": `Bearer ${jwt}`
+            },
+        })
 
         console.log("update user profile success", data);
         dispatch({ type: UPDATE_USER_PROFILE_SUCCESS, payload: data })
@@ -61,3 +66,9 @@ export const updateUserProfileAction = (reqData) => async (dispatch) => {
         dispatch({ type: UPDATE_USER_PROFILE_FAILURE, payload: error })
     }
 }
+
+export const logoutUserAction = () => {
+    return {
+      type: LOGOUT,
+    };
+  };
